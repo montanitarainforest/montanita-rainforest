@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Reserva · Montañita Rainforest</title>
+<style>
+:root{
+  --g1:#0d3a1c;--g2:#1a5c2e;--g3:#2d7a45;--g4:#b5c9a1;
+  --bg:#c8d4b8;--gold:#8b6914;--gold2:#c9a84c;--cream:#f4f0e6;
+  --text:#1e2e14;--muted:#5a6e4a;--danger:#b40000;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.container{max-width:820px;margin:auto;padding:28px 18px 60px}
+.hero{background:var(--g1);color:var(--cream);border-radius:28px;padding:42px 28px;text-align:center;margin-bottom:20px}
+.hero .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--g4)}
+.hero h1{font-family:Georgia,serif;font-size:clamp(2rem,7vw,3.8rem);line-height:1;margin:12px 0}
+.hero em{color:var(--gold2)}
+.hero p{color:var(--g4);font-size:.9rem}
+.card{background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.9);border-radius:20px;padding:24px;margin:16px 0;box-shadow:0 8px 25px rgba(13,58,28,.08)}
+h2{font-family:Georgia,serif;color:var(--g1);font-size:1.45rem;margin-bottom:5px}
+.sub{color:var(--muted);font-size:.84rem;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.78rem;font-weight:bold;color:var(--g1);margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid #c8d2c0;border-radius:11px;padding:12px 13px;background:#fff;font:inherit;color:var(--text)}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(45,122,69,.25);border-color:var(--g3)}
+.notice{padding:16px 17px;border-radius:14px;margin:12px 0;font-size:.87rem}
+.warn{background:#fffaf0;border:1.5px solid rgba(139,105,20,.35)}
+.danger{background:#fff4f4;border:1.5px solid rgba(180,0,0,.25)}
+.ok{background:#f2f8ef;border:1.5px solid rgba(45,122,69,.25)}
+.notice strong{display:block;margin-bottom:5px}
+.check{display:flex;gap:11px;align-items:flex-start;padding:13px 0;border-bottom:1px solid rgba(90,110,74,.14)}
+.check:last-child{border-bottom:0}
+.check input{width:19px;height:19px;flex:none;margin-top:2px}
+.check label{font-weight:normal;font-size:.87rem;margin:0;color:var(--text)}
+.required{color:var(--danger)}
+.summary{background:var(--g1);color:var(--cream);border-radius:18px;padding:20px;margin-top:18px}
+.summary strong{color:var(--g4)}
+button{border:0;border-radius:28px;padding:14px 24px;font-weight:bold;cursor:pointer;font-size:.85rem}
+.primary{background:var(--gold2);color:var(--g1);width:100%;margin-top:8px}
+.secondary{background:#fff;color:var(--g1);border:1px solid var(--g3);margin-top:12px;width:100%}
+.hidden{display:none}
+.success{text-align:center;padding:28px}
+.success h2{font-size:1.8rem;margin-bottom:10px}
+.small{font-size:.74rem;color:var(--muted)}
+.footer{text-align:center;font-size:.72rem;color:var(--muted);padding:20px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<section class="hero">
+  <div class="eyebrow">Reserva · San José de Olón · Ecuador</div>
+  <h1>Montañita<br><em>Rainforest</em></h1>
+  <p>Formulario de reserva y aceptación de condiciones</p>
+</section>
+
+<form id="bookingForm">
+
+<section class="card">
+  <h2>1. Datos de la reserva</h2>
+  <p class="sub">Completa esta información antes de realizar el pago de la reserva.</p>
+  <div class="grid">
+    <div><label>Nombre completo <span class="required">*</span></label><input id="nombre" required></div>
+    <div><label>Teléfono / WhatsApp <span class="required">*</span></label><input id="telefono" required></div>
+    <div><label>Número de huéspedes <span class="required">*</span></label>
+      <select id="huespedes" required><option value="">Seleccionar</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+    </div>
+    <div><label>Fecha de ingreso <span class="required">*</span></label><input id="entrada" type="date" required></div>
+    <div><label>Fecha de salida <span class="required">*</span></label><input id="salida" type="date" required></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>2. Antes de reservar</h2>
+  <p class="sub">Antes de confirmar tu reserva, te invitamos a revisar atentamente las características y condiciones del alojamiento.</p>
+
+  <div class="notice ok">
+    <strong>🏡 Alojamiento</strong>
+    La propiedad es una cabaña A-frame ubicada en un entorno natural en San José de Olón. Tiene capacidad máxima de 5 personas, jacuzzi privado, 2 unidades de aire acondicionado, 2 ventiladores y WiFi.
+  </div>
+
+  <div class="notice warn">
+    <strong>🌿 Entorno natural e insectos</strong>
+    La propiedad está rodeada de naturaleza. Por sus características y ubicación, puede existir presencia de insectos propios de la zona, especialmente dependiendo del clima y la hora. Se realizan labores de limpieza y medidas preventivas, pero no se puede garantizar la ausencia absoluta de insectos. Te recomendamos traer repelente y tener en cuenta esta característica antes de confirmar tu reserva.
+  </div>
+
+  <div class="notice danger">
+    <strong>⚠️ Seguridad: terraza, desniveles y escaleras</strong>
+    Algunas áreas requieren especial precaución. La terraza del jacuzzi presenta filos y desniveles, y las escaleras deben utilizarse con cuidado. Algunas zonas pueden no contar con barandal o protección perimetral. Por tu seguridad, te pedimos tener en cuenta estas características antes de confirmar tu reserva y durante tu estadía.
+  </div>
+
+  <div class="notice warn">
+    <strong>🌧️ Clima tropical</strong>
+    En épocas de lluvia puede formarse lodo en una pequeña zona de la propiedad. En caso de sequía o ausencia de lluvia, el jacuzzi puede no habilitarse con normalidad debido a las condiciones climáticas de la zona. Si esta situación afecta tu estadía, se te informará con anticipación.
+  </div>
+
+  <div class="notice danger">
+    <strong>⚠️ Controles del aire acondicionado</strong>
+    La cabaña cuenta con 2 controles remotos de aire acondicionado. Al momento del check-out, ambos deben encontrarse en el lugar donde fueron entregados. En caso de no encontrarse, se cobrará una penalidad de $25 USD por cada control faltante.
+  </div>
+
+  <div class="notice warn">
+    <strong>👥 Personas adicionales</strong>
+    Por cada persona adicional, se aplicará un valor extra siempre que haya sido notificada previamente. Si llega una persona adicional sin previo aviso, se cobrará una penalidad de <strong>$100 USD por cada persona no informada</strong>. Estas personas podrán permanecer durante esa noche, pero deberán retirarse al día siguiente.
+  </div>
+</section>
+
+<section class="card">
+  <h2>3. Servicios y condiciones</h2>
+  <p class="sub">Lee estas condiciones antes de confirmar tu reserva. Al marcar cada casilla, confirmas que has recibido y comprendido la información correspondiente.</p>
+
+  <div class="check"><input type="checkbox" required id="c1"><label for="c1">He visto y/o recibido fotografías y/o video del alojamiento, y declaro haber leído y comprendido la información sobre el entorno natural, la posible presencia de insectos y las advertencias de seguridad. También confirmo que tuve la oportunidad de realizar preguntas antes de reservar. <span class="required">*</span></label></div>
+  <div class="check"><input type="checkbox" required id="c2"><label for="c2">He leído y acepto las condiciones de uso de los servicios e instalaciones, incluyendo el jacuzzi, el inventario de la cabaña, las condiciones para huéspedes adicionales, las mascotas y los controles de aire acondicionado. <span class="required">*</span></label></div>
+</section>
+
+<section class="card">
+  <h2>4. Pago y reserva</h2>
+  <p class="sub">A continuación encontrarás las condiciones económicas correspondientes a tu reserva.</p>
+
+  <div class="grid">
+    <div><label>Valor total acordado (USD) <span class="required">*</span></label><input id="total" type="number" min="0" step="0.01" required></div>
+    <div><label>50% para reservar (USD) <span class="required">*</span></label><input id="anticipo" type="number" min="0" step="0.01" required></div>
+    <div><label>50% restante (USD) <span class="required">*</span></label><input id="saldo" type="number" min="0" step="0.01" required></div>
+  </div>
+
+  <div class="notice ok">
+    <strong>📅 Fecha límite para pagar el saldo</strong>
+    El 50% restante deberá pagarse <strong>un día antes de la reserva o, como máximo, tres horas antes de ingresar a la casa.</strong>
+  </div>
+
+  <div class="notice warn">
+    <strong>💳 Importante</strong>
+    La reserva se confirma con el 50% acordado. El saldo restante deberá pagarse un día antes de la reserva o, como máximo, tres horas antes de ingresar a la casa.
+  </div>
+
+  <div class="check"><input type="checkbox" required id="c9"><label for="c9">Confirmo que conozco el valor total de mi reserva, el anticipo realizado/acordado y el saldo pendiente. <span class="required">*</span></label></div>
+  <div class="check"><input type="checkbox" required id="c10"><label for="c10">Confirmo que cualquier cambio, descuento, excepción o acuerdo especial deberá quedar registrado por escrito. <span class="required">*</span></label></div>
+</section>
+
+<section class="card">
+  <h2>5. Cancelación</h2>
+  <p class="sub">Lee atentamente esta política de cancelación antes de confirmar tu reserva.</p>
+  <div class="notice" style="margin-top:14px">
+    <strong>📌 Política de cancelación</strong>
+    Una vez confirmada la reserva, el importe abonado no será reembolsable si el huésped cancela, desiste de la estadía o decide no hacer uso de la reserva por cualquiera de las condiciones, características o circunstancias del alojamiento que hayan sido previamente informadas y aceptadas en este documento.
+  </div>
+  <input type="hidden" id="cancelacion" value="Una vez confirmada la reserva, el importe abonado no será reembolsable si el huésped cancela, desiste de la estadía o decide no hacer uso de la reserva por cualquiera de las condiciones, características o circunstancias del alojamiento que hayan sido previamente informadas y aceptadas en este documento.">
+  <p class="small" style="margin-top:8px">⚠️ Esta cláusula forma parte de las condiciones de la reserva y no puede ser modificada desde este formulario. Al confirmar la reserva, declaras que la has leído y comprendido.</p>
+</section>
+
+<section class="card">
+  <h2>6. Confirmación final</h2>
+  <div class="notice ok">
+    <strong>✅ Declaración del huésped</strong>
+    Declaro que he recibido información suficiente sobre el alojamiento, he podido realizar preguntas antes de reservar y he leído las características, advertencias y condiciones indicadas en este formulario. Confirmo que la información proporcionada corresponde al alojamiento que deseo reservar.
+  </div>
+
+  <div class="grid">
+    <div><label>Nombre de quien acepta <span class="required">*</span></label><input id="aceptaNombre" required></div>
+    <div><label>Documento de identidad</label><input id="documento"></div>
+  </div>
+
+  <div class="check" style="margin-top:14px">
+    <input type="checkbox" required id="aceptacion">
+    <label for="aceptacion"><strong>Acepto las condiciones de esta reserva y confirmo que las he leído antes de realizar el pago.</strong> <span class="required">*</span></label>
+  </div>
+
+  <button class="primary" type="submit">CONFIRMAR Y GENERAR CONSTANCIA</button>
+</section>
+</form>
+
+<section id="resultado" class="card hidden">
+  <div class="success">
+    <div style="font-size:3rem">🌿</div>
+    <h2>Reserva registrada</h2>
+    <p id="mensaje"></p>
+    <div class="summary" id="resumen"></div>
+    <button class="secondary" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+  </div>
+</section>
+
+<div class="footer">Montañita Rainforest · San José de Olón · Ecuador</div>
+</div>
+
+<script>
+// Recibe las fechas que vienen del calendario de GitHub Pages.
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const entrada = params.get("entrada");
+  const salida = params.get("salida");
+  if (entrada) document.getElementById("entrada").value = entrada;
+  if (salida) document.getElementById("salida").value = salida;
+})();
+
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzPwEWNQUrdYzH2k_GsHcFSC8QVow8Il6vVC5MmcdZHilIv1fAiG2t6lo9vLtEj7xa/exec";
+const f=document.getElementById('bookingForm');
+
+f.addEventListener('submit', async function(e){
+  e.preventDefault();
+
+  if(!f.checkValidity()){
+    f.reportValidity();
+    return;
+  }
+
+  const ahora = new Date().toLocaleString('es-EC',{dateStyle:'full',timeStyle:'short'});
+
+  const data = {
+    nombre: document.getElementById('nombre').value,
+    documento: document.getElementById('documento').value,
+    telefono: document.getElementById('telefono').value,
+    entrada: document.getElementById('entrada').value,
+    salida: document.getElementById('salida').value,
+    huespedes: document.getElementById('huespedes').value,
+    total: document.getElementById('total').value,
+    anticipo: document.getElementById('anticipo').value,
+    saldo: document.getElementById('saldo').value,
+    cancelacion: document.getElementById('cancelacion').value,
+    aceptacion: ahora + " — " + document.getElementById('aceptaNombre').value,
+    version: "MR-2026-v4"
+  };
+
+  const boton = f.querySelector('button[type="submit"]');
+  boton.disabled = true;
+  boton.textContent = "GUARDANDO RESERVA...";
+
+  try {
+    /*
+      mode:no-cors permite enviar el formulario desde un archivo HTML local
+      a Google Apps Script. La respuesta no puede leerse desde el navegador,
+      pero Google Apps Script recibe y guarda los datos.
+    */
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(data)
+    });
+
+    document.getElementById('mensaje').innerHTML =
+      `<strong>${data.aceptacion.split(" — ")[1]}</strong> ha confirmado la lectura y aceptación de las condiciones de la reserva.`;
+
+    document.getElementById('resumen').innerHTML=`
+      <p><strong>Huésped:</strong> ${data.nombre}</p>
+      <p><strong>Fechas:</strong> ${data.entrada} → ${data.salida}</p>
+      <p><strong>Huéspedes:</strong> ${data.huespedes}</p>
+      <p><strong>Valor total:</strong> $${Number(data.total).toFixed(2)} USD</p>
+      <p><strong>Anticipo:</strong> $${Number(data.anticipo).toFixed(2)} USD</p>
+      <p><strong>Saldo:</strong> $${Number(data.saldo).toFixed(2)} USD</p>
+      <p><strong>Aceptación registrada:</strong> ${ahora}</p>
+    `;
+
+    document.getElementById('resultado').classList.remove('hidden');
+    document.getElementById('resultado').scrollIntoView({behavior:'smooth'});
+
+    boton.textContent = "RESERVA GUARDADA ✓";
+
+  } catch (error) {
+    console.error(error);
+    alert("No pudimos enviar la reserva. Revisa tu conexión a internet e inténtalo nuevamente.");
+    boton.disabled = false;
+    boton.textContent = "CONFIRMAR Y GENERAR CONSTANCIA";
+  }
+});
+</script>
+</body>
+</html>
