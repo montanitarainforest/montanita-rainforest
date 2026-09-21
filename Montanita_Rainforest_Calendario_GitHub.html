@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Disponibilidad · Montañita Rainforest</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f1e8;
+      color: #26352b;
+    }
+
+    .contenedor {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 35px 20px 50px;
+    }
+
+    .encabezado {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: 0.7;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 42px;
+      font-weight: 700;
+    }
+
+    .subtitulo {
+      margin-top: 10px;
+      font-size: 17px;
+      opacity: 0.75;
+    }
+
+    .leyenda {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 25px 0;
+      font-size: 14px;
+    }
+
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .punto {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .punto.disponible {
+      background: #7c9b72;
+    }
+
+    .punto.reservado {
+      background: #c96d5b;
+    }
+
+    .calendario {
+      background: white;
+      border-radius: 24px;
+      padding: 25px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    .navegacion {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .mes {
+      font-size: 25px;
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+
+    button {
+      border: none;
+      background: #26352b;
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .dias-semana,
+    .dias {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+    }
+
+    .dia-semana {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      opacity: 0.55;
+      padding: 8px 0;
+    }
+
+    .dia {
+      min-height: 85px;
+      border-radius: 14px;
+      padding: 10px;
+      position: relative;
+      border: 1px solid #e7e3db;
+      background: #f7faf5;
+      transition: transform 0.15s ease;
+    }
+
+    .dia:hover {
+      transform: translateY(-2px);
+    }
+
+    .numero {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .dia.disponible {
+      background: #eef5ea;
+      border-color: #d9e7d3;
+    }
+
+    .dia.reservado {
+      background: #f8e7e3;
+      border-color: #edc8c1;
+    }
+.seleccion-entrada,
+.seleccion-salida {
+  background: #26352b !important;
+  color: white;
+  border-color: #26352b !important;
+  transform: translateY(-2px);
+}
+
+.seleccion-rango {
+  background: #dfe9da !important;
+  border-color: #c8d8c1 !important;
+}
+    .estado {
+      display: block;
+      margin-top: 9px;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .dia.disponible .estado {
+      color: #58754f;
+    }
+
+    .dia.reservado .estado {
+      color: #ae5545;
+    }
+
+    .vacio {
+      min-height: 85px;
+    }
+
+    .hoy {
+      outline: 2px solid #26352b;
+      outline-offset: -2px;
+    }
+
+    .cargando {
+      text-align: center;
+      padding: 40px;
+      opacity: 0.6;
+    }
+
+    .resumen-reserva {
+  margin-top: 25px;
+  padding: 22px;
+  border-radius: 18px;
+  background: #f5f1e8;
+  text-align: center;
+}
+
+.resumen-titulo {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.fechas-seleccionadas {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.mensaje-disponibilidad {
+  font-size: 14px;
+  font-weight: bold;
+  color: #58754f;
+  margin-bottom: 15px;
+}
+.mensaje-error {
+  color: #ae5545;
+  background: #f8e7e3;
+  border: 1px solid #edc8c1;
+  padding: 12px 15px;
+  border-radius: 12px;
+  line-height: 1.5;
+}
+
+.mensaje-ok {
+  color: #58754f;
+  background: #eef5ea;
+  border: 1px solid #d9e7d3;
+  padding: 12px 15px;
+  border-radius: 12px;
+  line-height: 1.5;
+}
+.boton-continuar {
+  width: 100%;
+  max-width: 320px;
+  height: 48px;
+  border-radius: 25px;
+  background: #26352b;
+  color: white;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}.boton-reserva {
+      display: block;
+      width: fit-content;
+      margin: 30px auto 0;
+      padding: 15px 25px;
+      background: #26352b;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: transform 0.15s ease;
+    }
+
+    .boton-reserva:hover {
+      transform: translateY(-2px);
+    }
+
+    .nota {
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.55;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 600px) {
+
+      .contenedor {
+        padding: 25px 10px 40px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      .subtitulo {
+        font-size: 15px;
+      }
+
+      .calendario {
+        padding: 12px;
+        border-radius: 18px;
+      }
+
+      .dias-semana,
+      .dias {
+        gap: 4px;
+      }
+
+      .dia {
+        min-height: 65px;
+        padding: 6px;
+        border-radius: 9px;
+      }
+
+      .vacio {
+        min-height: 65px;
+      }
+
+      .numero {
+        font-size: 13px;
+      }
+
+      .estado {
+        font-size: 7px;
+        margin-top: 6px;
+      }
+
+      .mes {
+        font-size: 20px;
+      }
+
+      button {
+        width: 36px;
+        height: 36px;
+      }
+
+      .leyenda {
+        gap: 15px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <div class="encabezado">
+      <div class="logo">Montañita Rainforest</div>
+
+      <h1>Disponibilidad</h1>
+
+      <div class="subtitulo">
+        Consulta las fechas disponibles para tu próxima estadía 🌿
+      </div>
+    </div>
+
+    <div class="leyenda">
+      <div class="leyenda-item">
+        <span class="punto disponible"></span>
+        Disponible
+      </div>
+
+      <div class="leyenda-item">
+        <span class="punto reservado"></span>
+        Reservado
+      </div>
+    </div>
+
+    <div class="calendario">
+
+      <div class="navegacion">
+
+        <button onclick="mesAnterior()">‹</button>
+
+        <div class="mes" id="mesActual">
+          Cargando...
+        </div>
+
+        <button onclick="mesSiguiente()">›</button>
+
+      </div>
+
+      <div class="dias-semana">
+        <div class="dia-semana">LUN</div>
+        <div class="dia-semana">MAR</div>
+        <div class="dia-semana">MIÉ</div>
+        <div class="dia-semana">JUE</div>
+        <div class="dia-semana">VIE</div>
+        <div class="dia-semana">SÁB</div>
+        <div class="dia-semana">DOM</div>
+      </div>
+
+      <div id="dias" class="dias">
+        <div class="cargando">Cargando disponibilidad...</div>
+      </div>
+<div id="resumenReserva" class="resumen-reserva" style="display: none;">
+
+  <div class="resumen-titulo">
+    Tu estadía 🌿
+  </div>
+
+  <div id="fechasSeleccionadas" class="fechas-seleccionadas">
+  </div>
+
+  <div id="mensajeDisponibilidad" class="mensaje-disponibilidad">
+  </div>
+
+  <button
+    onclick="continuarReserva()"
+    id="botonReserva"
+    class="boton-continuar"
+    style="display: none;">
+    Continuar con mi reserva →
+  </button>
+
+</div>
+    </div>
+
+    <div class="nota">
+      La disponibilidad se actualiza automáticamente según las reservas registradas.
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let reservas = [];
+
+    let fechaActual = new Date();
+    let fechaEntradaSeleccionada = null;
+let fechaSalidaSeleccionada = null;
+
+    /*
+      Cargamos las reservas desde Google Sheets
+    */
+
+    /*
+      Cargamos las reservas desde Google Sheets mediante un
+      endpoint público de Apps Script (JSONP). Esto permite
+      que este calendario funcione también desde GitHub Pages.
+    */
+
+    const URL_DATOS_RESERVAS =
+      "https://script.google.com/macros/s/AKfycbycIcJmkpftN4qlaN-tFh3N7P39lWEathWMzzkLQu0srPJiPOSGam8FSjBD17cvuYAe/exec";
+
+    function cargarReservas() {
+
+      const callbackName =
+        "recibirReservas_" + Date.now();
+
+      window[callbackName] = function(resultado) {
+
+        reservas = resultado || [];
+
+        mostrarCalendario();
+
+        delete window[callbackName];
+        const script = document.getElementById(callbackName);
+        if (script) script.remove();
+      };
+
+      const script = document.createElement("script");
+
+      script.id = callbackName;
+
+      script.src =
+        URL_DATOS_RESERVAS +
+        "?accion=reservas&callback=" +
+        encodeURIComponent(callbackName);
+
+      script.onerror = function() {
+
+        document.getElementById("dias").innerHTML =
+          "<div class='cargando'>No se pudo cargar la disponibilidad.</div>";
+
+        delete window[callbackName];
+        script.remove();
+      };
+
+      document.body.appendChild(script);
+    }
+
+    cargarReservas();
+
+
+    /*
+      Convertimos una fecha YYYY-MM-DD
+      a objeto Date sin problemas de zona horaria
+    */
+
+    function crearFecha(fecha) {
+
+      const partes = fecha.split("-");
+
+      return new Date(
+        Number(partes[0]),
+        Number(partes[1]) - 1,
+        Number(partes[2])
+      );
+
+    }
+
+
+    /*
+      Determinamos si una fecha está reservada.
+      
+      IMPORTANTE:
+      El día de salida queda disponible,
+      porque ese día sale un huésped y puede
+      entrar otro.
+    */
+
+    function estaReservado(fecha) {
+
+  for (let i = 0; i < reservas.length; i++) {
+
+    const entrada = crearFecha(reservas[i].entrada);
+    const salida = crearFecha(reservas[i].salida);
+
+    if (fecha >= entrada && fecha <= salida) {
+      return true;
+    }
+
+  }
+
+  return false;
+}
+
+
+    /*
+      Dibujamos el calendario
+    */
+
+    function mostrarCalendario() {
+
+      const contenedor = document.getElementById("dias");
+
+      contenedor.innerHTML = "";
+
+      const año = fechaActual.getFullYear();
+      const mes = fechaActual.getMonth();
+
+      const nombreMes = fechaActual.toLocaleDateString(
+        "es-ES",
+        {
+          month: "long",
+          year: "numeric"
+        }
+      );
+
+      document.getElementById("mesActual").textContent = nombreMes;
+
+
+      /*
+        Primer día del mes
+      */
+
+      const primerDia = new Date(año, mes, 1);
+
+      let diaInicio = primerDia.getDay();
+
+      /*
+        JavaScript considera domingo como 0.
+        Nosotros queremos que lunes sea 0.
+      */
+
+      diaInicio = (diaInicio + 6) % 7;
+
+
+      /*
+        Número de días del mes
+      */
+
+      const diasMes = new Date(
+        año,
+        mes + 1,
+        0
+      ).getDate();
+
+
+      /*
+        Espacios vacíos antes del día 1
+      */
+
+      for (let i = 0; i < diaInicio; i++) {
+
+        const vacio = document.createElement("div");
+
+        vacio.className = "vacio";
+
+        contenedor.appendChild(vacio);
+
+      }
+
+
+      /*
+        Creamos cada día
+      */
+
+      const hoy = new Date();
+
+      hoy.setHours(0,0,0,0);
+
+
+      for (let dia = 1; dia <= diasMes; dia++) {
+
+        const fecha = new Date(
+          año,
+          mes,
+          dia
+        );
+
+        const reservado = estaReservado(fecha);
+
+
+        const elemento = document.createElement("div");
+
+        elemento.className =
+          "dia " +
+          (reservado ? "reservado" : "disponible");
+if (
+  fechaEntradaSeleccionada &&
+  fecha.getTime() === fechaEntradaSeleccionada.getTime()
+) {
+  elemento.classList.add("seleccion-entrada");
+}
+
+if (
+  fechaSalidaSeleccionada &&
+  fecha.getTime() === fechaSalidaSeleccionada.getTime()
+) {
+  elemento.classList.add("seleccion-salida");
+}
+
+if (
+  fechaEntradaSeleccionada &&
+  fechaSalidaSeleccionada &&
+  fecha > fechaEntradaSeleccionada &&
+  fecha < fechaSalidaSeleccionada
+) {
+  elemento.classList.add("seleccion-rango");
+}
+
+        if (
+          fecha.getTime() === hoy.getTime()
+        ) {
+
+          elemento.classList.add("hoy");
+
+        }
+
+
+        elemento.innerHTML = `
+          <div class="numero">${dia}</div>
+
+          <span class="estado">
+            ${reservado ? "Reservado" : "Disponible"}
+          </span>
+        `;
+if (!reservado) {
+  elemento.style.cursor = "pointer";
+
+  elemento.addEventListener("click", function() {
+    seleccionarFecha(fecha);
+  });
+}
+
+        contenedor.appendChild(elemento);
+
+      }
+
+    }
+
+
+    /*
+      Cambiar al mes anterior
+    */
+function seleccionarFecha(fecha) {
+
+  // Primera selección: fecha de entrada
+  if (!fechaEntradaSeleccionada) {
+
+    fechaEntradaSeleccionada = fecha;
+    fechaSalidaSeleccionada = null;
+
+    mostrarCalendario();
+    mostrarResumenReserva();
+
+    return;
+  }
+
+  // Segunda selección: fecha de salida
+  if (!fechaSalidaSeleccionada) {
+
+    // La salida debe ser posterior a la entrada
+    if (fecha <= fechaEntradaSeleccionada) {
+
+      mostrarResumenReserva(
+        "error",
+        "La fecha de salida debe ser posterior a la fecha de entrada."
+      );
+
+      return;
+    }
+
+    // Comprobar si el rango atraviesa una reserva
+    if (
+      estaReservadoEnRango(
+        fechaEntradaSeleccionada,
+        fecha
+      )
+    ) {
+
+      mostrarResumenReserva(
+        "error",
+        "Estas fechas no están disponibles. El rango seleccionado incluye una fecha reservada."
+      );
+
+      return;
+    }
+
+    fechaSalidaSeleccionada = fecha;
+
+    mostrarCalendario();
+    mostrarResumenReserva();
+
+    return;
+  }
+
+  // Si ya había un rango seleccionado,
+  // comenzar una nueva selección
+  fechaEntradaSeleccionada = fecha;
+  fechaSalidaSeleccionada = null;
+
+  mostrarCalendario();
+  mostrarResumenReserva();
+}
+
+
+function mostrarResumenReserva(tipo = "", mensajeError = "") {
+
+  const resumen =
+    document.getElementById("resumenReserva");
+
+  const fechas =
+    document.getElementById("fechasSeleccionadas");
+
+  const mensaje =
+    document.getElementById("mensajeDisponibilidad");
+
+  const boton =
+    document.getElementById("botonReserva");
+
+
+  // Si no hay fecha seleccionada
+  if (!fechaEntradaSeleccionada) {
+
+    resumen.style.display = "none";
+
+    return;
+  }
+
+
+  resumen.style.display = "block";
+if (tipo === "error") {
+
+  fechas.textContent =
+    "Entrada: " +
+    fechaEntradaSeleccionada.toLocaleDateString(
+      "es-ES",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+  mensaje.textContent =
+    "⚠️ " + mensajeError;
+
+  mensaje.className =
+    "mensaje-disponibilidad mensaje-error";
+
+  boton.style.display = "none";
+
+  return;
+}
+
+  const entrada =
+    fechaEntradaSeleccionada.toLocaleDateString(
+      "es-ES",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+
+  // Solo se ha seleccionado entrada
+  if (!fechaSalidaSeleccionada) {
+
+    fechas.textContent =
+      "Entrada: " + entrada;
+
+    mensaje.textContent =
+      "Ahora selecciona tu fecha de salida.";
+
+    mensaje.className =
+      "mensaje-disponibilidad";
+
+    boton.style.display = "none";
+
+    return;
+  }
+
+
+  const salida =
+    fechaSalidaSeleccionada.toLocaleDateString(
+      "es-ES",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+
+  fechas.textContent =
+    entrada + " → " + salida;
+
+
+ 
+
+
+  // Todo está disponible
+  mensaje.textContent =
+    "✨ ¡Estas fechas están disponibles!";
+
+  mensaje.className =
+    "mensaje-disponibilidad mensaje-ok";
+
+  boton.style.display = "block";
+}
+
+function estaReservadoEnRango(entrada, salida) {
+
+  for (let i = 0; i < reservas.length; i++) {
+
+    const reservaEntrada =
+      crearFecha(reservas[i].entrada);
+
+    const reservaSalida =
+      crearFecha(reservas[i].salida);
+
+    if (
+      entrada <= reservaSalida &&
+      salida >= reservaEntrada
+    ) {
+
+      return true;
+
+    }
+
+  }
+
+  return false;
+}
+    function mesAnterior() {
+
+      fechaActual.setMonth(
+        fechaActual.getMonth() - 1
+      );
+
+      mostrarCalendario();
+
+    }
+
+
+    /*
+      Cambiar al mes siguiente
+    */
+
+    function mesSiguiente() {
+
+      fechaActual.setMonth(
+        fechaActual.getMonth() + 1
+      );
+
+      mostrarCalendario();
+
+    }
+const URL_FORMULARIO =
+  "https://script.google.com/macros/s/AKfycbyzPwEWNQUrdYzH2k_GsHcFSC8QVow8Il6vVC5MmcdZHilIv1fAiG2t6lo9vLtEj7xa/exec";
+
+
+function continuarReserva() {
+
+  if (!fechaEntradaSeleccionada || !fechaSalidaSeleccionada) {
+    return;
+  }
+
+  function formatearFecha(fecha) {
+
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+    const dia = String(fecha.getDate()).padStart(2, "0");
+
+    return `${año}-${mes}-${dia}`;
+  }
+
+  const entrada =
+    formatearFecha(fechaEntradaSeleccionada);
+
+  const salida =
+    formatearFecha(fechaSalidaSeleccionada);
+
+  const url =
+    URL_FORMULARIO +
+    "?entrada=" + encodeURIComponent(entrada) +
+    "&salida=" + encodeURIComponent(salida);
+
+ 
+window.open(url, "_blank");
+}
+  </script>
+
+</body>
+</html>
